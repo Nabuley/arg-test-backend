@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <h2>관리자 로그인</h2>
+  <input type="password" id="pwInput" placeholder="비밀번호 입력">
+  <button onclick="checkAdmin()">확인</button>
+  <p id="result"></p>
+
+  <script>
+    async function checkAdmin() {
+      const pw = document.getElementById('pwInput').value;
+      const resultTag = document.getElementById('result');
+
+      // 서버(백엔드) 주소로 요청을 보냄
+      const response = await fetch('/api/check-auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pw })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        resultTag.innerText = "✅ " + data.message;
+        resultTag.style.color = "blue";
+      } else {
+        resultTag.innerText = "❌ " + data.message;
+        resultTag.style.color = "red";
+      }
+    }
+  </script>
+</body>
+</html>
